@@ -1,0 +1,15 @@
+{
+  "name": "slack-lot-command",
+  "description": "add `lot` command to your workspace",
+  "repository": "https://github.com/ahuglajbclajep/slack-lot-command",
+  "env": {
+    "VERIFICATION_TOKEN": {
+      "description": "Verification token",
+      "required":  true
+    },
+    "OAUTH_TOKEN": {
+      "description": "OAuth Access Token",
+      "required":  true
+    }
+  }
+}
