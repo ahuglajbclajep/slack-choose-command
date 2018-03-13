@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { WebClient } = require('@slack/client');
+const usecase = require('./usecase.js');
 
 const app = express();
 
@@ -11,15 +12,7 @@ app.post('/lot', (req, res) => {
 
   const web = new WebClient(process.env.OAUTH_TOKEN);
   web.channels.info({channel: req.body.channel_id})
-    .then(channel => {
-      const text = random(channel.channel.members);
-      res.send({text});
-    });
+    .then(channel => res.send(usecase.createMessage(channel.channel.members)));
 });
 
 app.listen(process.env.PORT, () => console.log('App started'));
-
-
-function random(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
