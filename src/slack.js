@@ -1,8 +1,7 @@
-module.exports = { channelMembers, postJSON };
+module.exports = { channelMembers, reply };
 
 const { WebClient } = require('@slack/client');
 const retry = require('retry');
-const request = require('request-promise-native');
 
 function channelMembers(channel) {
   const token = process.env.OAUTH_TOKEN;
@@ -12,8 +11,6 @@ function channelMembers(channel) {
     .catch(() => []);
 }
 
-function postJSON(uri, body) {
-  console.log(body);
-  return request({ method: 'POST', uri, body, json: true })
-    .then(console.log('send'));
+function reply(text){
+  return { response_type: 'in_channel', text }
 }

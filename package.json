@@ -1,6 +1,6 @@
 {
-  "name": "slack-lot-command",
-  "version": "0.2.0",
+  "name": "slack-choose-command",
+  "version": "1.0.0",
   "private": true,
   "engines": {
     "node": "~8.9"
