@@ -8,7 +8,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/choose', (req, res) => {
+app.post('/', (req, res) => {
   // check request & send response.
   if (req.body.token !== process.env.VERIFICATION_TOKEN) {
     res.status(403).send();
