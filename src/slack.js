@@ -11,6 +11,6 @@ function channelMembers(channel) {
     .catch(() => []);
 }
 
-function reply(text){
-  return { response_type: 'in_channel', text }
+function reply(text) {
+  return { response_type: 'in_channel', text };
 }
