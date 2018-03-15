@@ -16,5 +16,6 @@ function choose(members, args) {
 }
 
 function chooseReply(members) {
+  if (member.length === 0) return { text: 'wrong input!' };
   return slack.reply(`${members.map(member => `<@${member}>`).join(' ')} chosen!`);
 }
