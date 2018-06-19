@@ -9,22 +9,14 @@ function random(array) {
 function combinations(set, k) {
   if (k <= 0 || set.length < k) return [];
   if (k === set.length) return [set];
+  if (k === 1) return set.map(e => [e]);
 
   const combs = [];
-
-  if (k === 1) {
-    for (let i = 0; i < set.length; i++) {
-      combs.push([set[i]]);
-    }
-    return combs;
-  }
-
   for (let i = 0; i < set.length - k + 1; i++) {
     const head = set.slice(i, i + 1);
-    const tailcombs = combinations(set.slice(i + 1), k - 1);
-    for (let j = 0; j < tailcombs.length; j++) {
-      combs.push(head.concat(tailcombs[j]));
-    }
+    combinations(set.slice(i + 1), k - 1).forEach(e => {
+      combs.push(head.concat(e));
+    });
   }
   return combs;
 }
