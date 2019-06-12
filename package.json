@@ -1,9 +1,13 @@
 {
   "name": "slack-choose-command",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "engines": {
     "node": "~8.9"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js"
   },
   "dependencies": {
     "@slack/client": "^4.0.0",
@@ -11,7 +15,7 @@
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5"
   },
-  "scripts": {
-    "start": "node src/app"
+  "devDependencies": {
+    "typescript": "^3.5.1"
   }
 }
