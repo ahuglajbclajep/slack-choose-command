@@ -1,6 +1,4 @@
-module.exports = { random, combinations, postJSON };
-
-const request = require('request-promise-native');
+module.exports = { random, combinations };
 
 function random(array) {
   return array.length === 0 ? [] : array[Math.floor(Math.random() * array.length)];
@@ -19,8 +17,4 @@ function combinations(set, k) {
     });
   }
   return combs;
-}
-
-function postJSON(uri, body) {
-  return request({ method: 'POST', uri, body, json: true });
 }
