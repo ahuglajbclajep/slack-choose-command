@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 import axios from "axios";
 const choose = require('./choose.js');
 const slack = require('./slack.js');
+import * as util from "./util";
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,7 +20,7 @@ app.post('/', (req, res) => {
 
   // call slack api & post JSON to response_url.
   slack.fetchChannelMembers(args.channel)
-    .then(members => choose.choose(members, args))
+    .then(members => util.choose(members, args.number))
     .then(chosenMembers => slack.createReply(chosenMembers))
     .then(reply => axios.post(url, reply));
 });

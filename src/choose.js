@@ -1,6 +1,4 @@
-module.exports = { chooseParser, choose };
-
-const util = require('./util.js');
+module.exports = { chooseParser };
 
 function chooseParser(body) {
   const i = parseInt(body.text, 10);
@@ -8,8 +6,4 @@ function chooseParser(body) {
     channel: body.channel_id,
     number: isNaN(i) ? 1 : i
   };
-}
-
-function choose(members, args) {
-  return util.random(util.combinations(members, args.number));
 }
