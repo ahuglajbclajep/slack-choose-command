@@ -1,7 +1,8 @@
+import { WebClient, WebAPICallResult } from "@slack/web-api";
+
 class IllegalArgumentError extends Error {
   name = this.constructor.name;
 }
-
 function randomaChoose<T>(arr: T[]) {
   if (arr.length === 0)
     throw new IllegalArgumentError(
@@ -28,4 +29,12 @@ function combinations<T>(set: T[], k: number) {
 const choose = <T>(arr: T[], num: number) =>
   randomaChoose(combinations(arr, num));
 
-export { choose };
+type ChannelsInfoResult = WebAPICallResult & { channel: { members: string[] } };
+function fetchChannelMembers(channel: string) {
+  const token = process.env.OAUTH_TOKEN;
+  return new WebClient(token).channels
+    .info({ channel })
+    .then(res => (res as ChannelsInfoResult).channel.members);
+}
+
+export { choose, fetchChannelMembers };
