@@ -8,12 +8,4 @@ function fetchChannelMembers(channel: string) {
     .then(res => (res as ChannelsInfoResult).channel.members);
 }
 
-const createReply = (members: string[]) =>
-  members.length === 0
-    ? { text: "wrong input!" }
-    : {
-        text: `${members.map(member => `<@${member}>`).join(" ")} chosen!`,
-        response_type: "in_channel"
-      };
-
-export { fetchChannelMembers, createReply };
+export default fetchChannelMembers;

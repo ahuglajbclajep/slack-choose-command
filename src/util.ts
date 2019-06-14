@@ -1,5 +1,14 @@
-const randomaChoose = <T>(arr: T[]) =>
-  arr.length === 0 ? [] : arr[Math.floor(Math.random() * arr.length)];
+class IllegalArgumentError extends Error {
+  name = this.constructor.name;
+}
+
+function randomaChoose<T>(arr: T[]) {
+  if (arr.length === 0)
+    throw new IllegalArgumentError(
+      "You cannot choose an element from an empty array."
+    );
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 function combinations<T>(set: T[], k: number) {
   if (k <= 0 || set.length < k) return [];
