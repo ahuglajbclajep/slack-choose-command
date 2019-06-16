@@ -1,8 +1,10 @@
 import { WebClient, WebAPICallResult } from "@slack/web-api";
 
-class IllegalArgumentError extends Error {
+class CustomError extends Error {
   name = this.constructor.name;
 }
+class IllegalArgumentError extends CustomError {}
+
 function randomaChoose<T>(arr: T[]) {
   if (arr.length === 0)
     throw new IllegalArgumentError(
@@ -37,4 +39,4 @@ function fetchChannelMembers(channel: string) {
     .then(res => (res as ChannelsInfoResult).channel.members);
 }
 
-export { choose, fetchChannelMembers };
+export { CustomError, choose, fetchChannelMembers };

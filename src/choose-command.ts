@@ -3,23 +3,34 @@ import axios from "axios";
 import * as util from "./util";
 
 interface CmdRequest extends Request {
-  body: RequestBody;
+  body: {
+    token: string;
+    response_url: string;
+    text: string;
+    channel_id: string;
+  };
 }
 
-type RequestBody = {
-  token: string;
-  channel_id: string;
-  text: string;
-  response_url: string;
-};
+class ParseError extends util.CustomError {
+  message = "parse error!";
+}
+function parse(argv: string) {
+  const result = argv.match(
+    /^\s*(?<number>\d+)?(?:\s+from(?:(?<members>(?:\s+<@\w+\|\w+>)+)|(?:\s+<#(?<channel>\w+)\|\w+>)))?\s*$/
+  );
+  if (!result) throw new ParseError();
 
-function parser(body: RequestBody) {
-  const num = Number.parseInt(body.text, 10);
-  return {
-    channel: body.channel_id,
-    url: body.response_url,
-    number: isNaN(num) ? 1 : num
-  };
+  const number = result.groups!.number ? +result.groups!.number : 1;
+  if (result.groups!.members) {
+    const members = [...result.groups!.members.matchAll(/<@(\w+)\|\w+>/g)].map(
+      result => result[1]
+    );
+    return { number, members };
+  } else if (result.groups!.channel) {
+    return { number, channel: result.groups!.channel };
+  } else {
+    return { number };
+  }
 }
 
 async function chooseCommand(req: CmdRequest, res: Response) {
@@ -28,13 +39,15 @@ async function chooseCommand(req: CmdRequest, res: Response) {
     res.status(403).send();
     return;
   }
-  const cmdArgs = parser(req.body);
   res.send();
 
   // call slack api & post JSON to response_url.
   let reply: { text: string; response_type?: "in_channel" };
   try {
-    const members = await util.fetchChannelMembers(cmdArgs.channel);
+    const cmdArgs = parse(req.body.text);
+    const members =
+      cmdArgs.members ||
+      (await util.fetchChannelMembers(cmdArgs.channel || req.body.channel_id));
     const chosenMembers = util.choose(members, cmdArgs.number);
     reply = {
       text: `${chosenMembers.map(member => `<@${member}>`).join(" ")} chosen!`,
@@ -43,7 +56,7 @@ async function chooseCommand(req: CmdRequest, res: Response) {
   } catch (e) {
     reply = { text: "Sorry, something went wrong." };
   }
-  axios.post(cmdArgs.url, reply);
+  axios.post(req.body.response_url, reply);
 }
 
 export default chooseCommand;
