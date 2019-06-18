@@ -1,18 +1,9 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import axios from "axios";
 import * as util from "./util";
 
-interface CmdRequest extends Request {
-  body: {
-    token: string;
-    response_url: string;
-    text: string;
-    channel_id: string;
-  };
-}
-
 class ParseError extends util.CustomError {
-  message = "parse error!";
+  message = "Parse error.";
 }
 function parse(argv: string) {
   const result = argv.match(
@@ -33,7 +24,7 @@ function parse(argv: string) {
   }
 }
 
-async function chooseCommand(req: CmdRequest, res: Response) {
+async function chooseCommand(req: SlashCommandRequest, res: Response) {
   // check request & send response.
   if (req.body.token !== process.env.VERIFICATION_TOKEN) {
     res.status(403).send();
@@ -42,7 +33,7 @@ async function chooseCommand(req: CmdRequest, res: Response) {
   res.send();
 
   // call slack api & post JSON to response_url.
-  let reply: { text: string; response_type?: "in_channel" };
+  let reply: Reply;
   try {
     const cmdArgs = parse(req.body.text);
     const members =
@@ -54,7 +45,17 @@ async function chooseCommand(req: CmdRequest, res: Response) {
       response_type: "in_channel"
     };
   } catch (e) {
-    reply = { text: "Sorry, something went wrong." };
+    let text: string;
+    if (e instanceof ParseError) {
+      text =
+        "Bad input: please see <https://github.com/ahuglajbclajep/slack-choose-command#usage|usage>.";
+    } else if (e instanceof util.IllegalArgumentError) {
+      text =
+        "Bad input: the input numerical value is bigger than number of people.";
+    } else {
+      text = "Sorry, something went wrong.";
+    }
+    reply = util.createErrorReply(text);
   }
   axios.post(req.body.response_url, reply);
 }

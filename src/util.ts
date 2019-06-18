@@ -39,4 +39,14 @@ function fetchChannelMembers(channel: string) {
     .then(res => (res as ChannelsInfoResult).channel.members);
 }
 
-export { CustomError, choose, fetchChannelMembers };
+const createErrorReply = (text: string) => ({
+  attachments: [{ color: "danger", mrkdwn_in: ["text"], text }]
+});
+
+export {
+  CustomError,
+  IllegalArgumentError,
+  choose,
+  fetchChannelMembers,
+  createErrorReply
+};
