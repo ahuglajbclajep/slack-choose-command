@@ -5,13 +5,13 @@ Add a `/choose` command to your workspace.
 ## Usage
 
 - `/choose`  
-  You choose one person from the current channel.
+  Choose one person from the current channel.
 - `/choose 3`  
-  You choose three people from the current channel.
+  Choose three people from the current channel.
 - `/choose 3 from #general`  
-  You choose three people from the general channel.
+  Choose three people from the general channel.
 - `/choose 3 from @foo @bar @baz @qux`  
-  You choose three people of the four.
+  Choose three people of the four.
 
 ## Install
 
@@ -21,7 +21,7 @@ Add a `/choose` command to your workspace.
 
 ### Create a Slack application
 
-Go to a [your Slack Apps web page](https://api.slack.com/apps).
+Go to the [your Slack Apps web page](https://api.slack.com/apps).
 
 1. _Create New app_.
 2. Setup application.
@@ -41,7 +41,7 @@ In the new application page:
 
 - _Command_: /choose
 - _Request URL_: Your Heroku application's URL.
-- _Short Description_: e.g. "Choose three people from the general channel".
+- _Short Description_: e.g. "Choose some people".
 - _Usage Hint_: e.g. "3 from #general".
 - _Escape channels, users, and links sent to your app_: **check**
 
@@ -70,7 +70,7 @@ In the application page:
 3. Select _OAuth & Permissions_ from _Features_ menu.
 4. Note down _OAuth Access Token_.
 
-In the Heroku application's _Settings_ page:
+In the Heroku application's settings page:
 
 5. Select _Reveal Config Vars_.
 6. Add _Verification Token_ as _VERIFICATION_TOKEN_.
